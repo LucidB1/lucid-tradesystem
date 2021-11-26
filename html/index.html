@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a3059c425a.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+    <link rel="stylesheet" href="./contextmenu/context-menu.css">
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="container" v-if=show>
+            <div class="wrapper">
+
+                <div class="buttons">
+                    <div class="gray-text" v-if="source == senderId">
+                        <span v-if="!senderConfirmed">Waiting for you to confirm</span>
+                        <span v-else-if="!receiverConfirmed">Waiting for to {{receiverName}} confirm</span>
+                        <span v-else>
+                            Items are giving
+                        </span>
+
+                    </div>
+                    <div class="gray-text" v-else-if="source == receiverId">
+                        <span v-if="!receiverConfirmed">Waiting for you to confirm</span>
+                        <span v-else-if="!senderConfirmed">Waiting for to {{senderName}} confirm</span>
+                        <span v-else>
+                            Items are giving
+                        </span>
+
+                    </div>
+
+                    <div class="buttons-group">
+                        <div class="btn btn-green" @click="confirmTrade"><i class="fas fa-check"></i>
+
+                        </div>
+                        <div class="btn btn-red"  @click="cancelTrade"><i class="fas fa-ban" ></i>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="offer-container sender">
+                    <div class="header-wrapper">
+                        <h2 class="header sender">{{senderName}} Items</h2>
+                        <input type="text" placeholder="amount" class="amount" v-if="senderId == source">
+
+                    </div>
+
+                    <div class="items-header"> Offered Items</div>
+
+                    <div class="offer-items sender" data-inventory='sender-offer'>
+                        <div class="item-slot sender" v-for="slot in offerSlots" :data-slot="slot " data-item="{}">
+                        </div>
+                    </div>
+
+                    <div class="items-header"> {{senderName}} Items</div>
+                    <div class="items sender" data-inventory='sender-items'>
+                        <div class="item-slot sender" v-for='(item, index) in combineSenderItems' v-if='item != null' :data-slot="index+1"
+                            :data-item="JSON.stringify(item)">
+                            <div class="item-img">
+                                <img :src="'./images/' + item.name + '.png'">
+                            </div>
+                            <div class="item-infos">
+                                <div class="item-label">{{item.label}}</div>
+                                <div class="item-amount">{{item.count}}</div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="border"></div>
+
+                <div class="offer-container receiver">
+
+                    <div class="header-wrapper">
+                        <h2 class="header sender">{{receiverName}} Items</h2>
+                        <input type="text" placeholder="amount" class="amount"  v-if="receiverId == source">
+
+                    </div>
+
+                    <div class="items-header"> Offered Items</div>
+                    <div class="offer-items receiver" data-inventory='receiver-offer'>
+
+                        <div class="item-slot receiver" v-for="slot in offerSlots" :data-slot="slot"></div>
+
+                    </div>
+
+                    <div class="items-header"> {{receiverName}} Items</div>
+
+                    <div class="items receiver" data-inventory='receiver-items'>
+
+                        <div class="item-slot receiver" v-for='(item, index) in combineReceiverItems' :data-slot="index+1" :data-item="JSON.stringify(item)">
+                            <div class="item-img">
+                                <img :src="'./images/' + item.name + '.png'">
+                            </div>
+                            <div class="item-infos">
+                                <div class="item-label">{{item.label}}</div>
+                                <div class="item-amount">{{item.count}}</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+<script src="./contextmenu/context-menu.js"></script>
+<script src="index.js"></script>
+
+</html>
